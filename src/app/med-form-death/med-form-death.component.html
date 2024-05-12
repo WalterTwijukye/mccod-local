@@ -1,0 +1,1283 @@
+<app-form-header></app-form-header>
+<div class="header1">
+    <h2 class="heading">MCCOD-local</h2>
+
+    <div class="summaryTabs">
+        <span class="tab">Total Records:<p class="stat">{{ totalRecords }}</p></span>
+        <span class="tab">Records Sent:<p class="stat">{{ sentToApiTrueRecords}}</p></span>
+        <span class="tab">Records NOT Sent:<p class="stat">{{ sentToApiFalseRecords }}</p></span>
+    </div>
+
+</div>
+<div class="container">
+    <form id="medicalCertDeath" class="main" action="" #f="ngForm" (ngSubmit)="submitForm(f)">
+        <div class="row">
+
+            <div class="col" style="border: none;">
+                <label class="form-label facility" for="facility">Facility : </label>
+                <span style=" margin-top: -7px; margin-left: 5px; "><b>{{ facility }}</b></span>
+            </div>
+            <!-- margin-left: -320px; -->
+            <div class="col" style="border: none; ">
+                <select class="form-select" id="facility" name="facility" placeholder="Select Facility"
+                    aria-label="Select Facility" [(ngModel)]="selectedOption" (change)="selectFacility()">
+                    <!-- <option selected>Select Facility</option> -->
+                    <option value="">Select Facility</option>
+                    <option *ngFor="let facility of facilities" [value]="facility.name">
+                        {{ facility.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col" style="border: none;">
+
+            </div>
+
+            <div class="col" style="border: none;">
+
+                <div class="topBtns">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        View Records
+                    </button>
+
+                    <button class="btn btn-primary update-button" (click)="updateRecord($event)">Update Record</button>
+                </div>
+
+                <!--Record CRUD Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Records of Deceased</h5>
+                                <!-- Search input field -->
+                                <!-- <input type="text" placeholder="Search by name" [(ngModel)]="searchText"
+                                    (input)="performSearch()"> -->
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row ">
+                                    <table class="tableRecords">
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Age</th>
+                                            <th>Sex</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        <tr *ngFor="let record of deceasedRecords">
+                                            <td>{{record.Name}}</td>
+                                            <td>{{record.age}}</td>
+                                            <td>{{record.sex}}</td>
+                                            <td>
+                                                <div class="action">
+                                                    <button class="edit" type="button"
+                                                        (click)="onEdit($event, record.id)">Edit</button>
+                                                    <button class="del" type="button" 
+                                                        (click)="deleteRecord($event, record.id)">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div><br>
+
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="MOH_National_Case_Number">Ministry of Health <br> National Case
+                    Number</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="MOH_National_Case_Number"
+                    [(ngModel)]="formData.MOH_National_Case_Number" name="MOH_National_Case_Number" required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Inpatient_Number">InPatient Number</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Inpatient_Number" [(ngModel)]="formData.Inpatient_Number"
+                    name="Inpatient_Number" required>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="NIN">NIN</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="NIN" [(ngModel)]="formData.NIN" name="NIN" required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Name">Name (Full Name): </label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Name" [(ngModel)]="formData.Name" name="Name" required>
+            </div>
+
+        </div>
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>Place of residence of deceased</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="Region">Region</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Region" [(ngModel)]="formData.Region" name="Region"
+                    required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Occupation">Occupation</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Occupation" [(ngModel)]="formData.Occupation"
+                    name="Occupation" required>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="District">District</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="District" [(ngModel)]="formData.District" name="District"
+                    required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Date_Of_Birth_Known">Date of Birth Known?</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="Date_Of_Birth_Known"
+                        [(ngModel)]="formData.Date_Of_Birth_Known" name="Date_Of_Birth_Known">
+                    <label class="form-check-label" for="Date_Of_Birth_Known">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="No" id="Date_Of_Birth_notKnown"
+                        [(ngModel)]="formData.Date_Of_Birth_notKnown" name="Date_Of_Birth_notKnown"
+                        style="margin-left: 5px;">
+                    <label class="form-check-label" for="Date_Of_Birth_Known">No</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="County">County</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="County" [(ngModel)]="formData.County" name="County"
+                    required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Date_Of_Birth">Date of Birth</label>
+            </div>
+            <div class="col">
+                <input type="date" id="Date_Of_Birth" name="Date_Of_Birth" [(ngModel)]="formData.Date_Of_Birth"
+                    class="form-control" required pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="Sub_County">Sub-County</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Sub_County" [(ngModel)]="formData.Sub_County"
+                    name="Sub_County" required>
+            </div>
+            <div class="col" style="border-right: none">
+                <label class="form-label" for="Age">Age:</label>
+                <table style="margin-right: -25px; margin-left: 20px">
+                    <tr>
+                        <th>Years:</th>
+                        <th>Months:</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Age.Years" [(ngModel)]="formData.Age.Years"
+                                    name="Age.Years" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Age.Months"
+                                    [(ngModel)]="formData.Age.Months" name="Age.Months" required>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col" style="border-left: none;">
+                <table>
+                    <tr>
+                        <th>Days: </th>
+                        <th>Hours: </th>
+                        <th>Minutes: </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Age.Days" [(ngModel)]="formData.Age.Days"
+                                    name="Age.Days" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Age.Hours" [(ngModel)]="formData.Age.Hours"
+                                    name="Age.Hours" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Age.Minutes"
+                                    [(ngModel)]="formData.Age.Minutes" name="Age.Minutes" required>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="Village">Village</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Village" [(ngModel)]="formData.Village" name="Village"
+                    required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Sex">Sex</label>
+            </div>
+            <div class="col">
+                <select class="form-select" id="Sex" name="Sex" [(ngModel)]="formData.Sex"
+                    aria-label="Default select example">
+                    <option selected></option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="placeOfDeath">Place of Death</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="placeOfDeath" [(ngModel)]="formData.placeOfDeath"
+                    name="placeOfDeath" required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="Date_Time_Of_Death">Date and time of death</label>
+            </div>
+            <div class="col">
+                <input type="date" id="Date_Time_Of_Death" name="Date_Time_Of_Death"
+                    [(ngModel)]="formData.Date_Time_Of_Death" class="form-control" required
+                    pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$">
+            </div>
+
+        </div>
+
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>Frame A: Medical Data. Part 1 and 2</h4>
+            </div>
+        </div>
+
+        <div class="tables">
+            <form>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Cause of death</th>
+                        <th>Code</th>
+                        <th>Cause of Death Free Text</th>
+                        <th>Time interval<br> type from <br>onset to death</th>
+                        <th>Time interval<br> type from <br>onset to death</th>
+                    </tr>
+                    <tr>
+                        <th>Report disease or condition<br> directly leading to death on linea</th>
+                        <th>a</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath1" name="causeOfDeath1"
+                                    [(ngModel)]="formData.causeOfDeath1" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="1">
+                                <!-- <div class="ctw-window" data-ctw-ino="1"></div> -->
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code1" name="code1" [(ngModel)]="formData.code1"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeathFreeText1" name="causeOfDeathFreeText1"
+                                    [(ngModel)]="formData.causeOfDeathFreeText1" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-select" id="Time_Interval_From_Onset_To_Death1.Time_Interval_Unit1"
+                                    name="Time_Interval_From_Onset_To_Death1.Time_Interval_Unit1"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death1.Time_Interval_Unit1"
+                                    aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="Years">Years</option>
+                                    <option value="Months">Months</option>
+                                    <option value="Weeks">Weeks</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Hours">Hours</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="Time_Interval_From_Onset_To_Death1.Time_Interval_Qtty1"
+                                    name="Time_Interval_From_Onset_To_Death1.Time_Interval_Qtty1"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death1.Time_Interval_Qtty1"
+                                    autocomplete="off">
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="1"></div>
+                    <tr>
+                        <th>
+                            Report chain of events 'due to' <br>(b to d) in order (if applicable)
+                        </th>
+                        <th>b</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath2" name="causeOfDeath2"
+                                    [(ngModel)]="formData.causeOfDeath2" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="2">
+                                <!-- <div class="ctw-window" data-ctw-ino="2"></div> -->
+                            </div>
+
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code2" name="code2" [(ngModel)]="formData.code2"
+                                    class="ctw-input" autocomplete="off" data-ctw-ino="2">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeathFreeText2" name="causeOfDeathFreeText2"
+                                    [(ngModel)]="formData.causeOfDeathFreeText2" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-select" id="Time_Interval_From_Onset_To_Death2.Time_Interval_Unit2"
+                                    name="Time_Interval_From_Onset_To_Death2.Time_Interval_Unit2"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death2.Time_Interval_Unit2"
+                                    aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="Years">Years</option>
+                                    <option value="Months">Months</option>
+                                    <option value="Weeks">Weeks</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Hours">Hours</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="Time_Interval_From_Onset_To_Death2.Time_Interval_Qtty2"
+                                    name="Time_Interval_From_Onset_To_Death2.Time_Interval_Qtty2"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death2.Time_Interval_Qtty2"
+                                    autocomplete="off">
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="2"></div>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>c</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath3" name="causeOfDeath3"
+                                    [(ngModel)]="formData.causeOfDeath3" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="3">
+                                <!-- <div class="ctw-window" data-ctw-ino="3"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code3" name="code3" [(ngModel)]="formData.code3"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeathFreeText3" name="causeOfDeathFreeText3"
+                                    [(ngModel)]="formData.causeOfDeathFreeText3" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-select" id="Time_Interval_From_Onset_To_Death3.Time_Interval_Unit3"
+                                    name="Time_Interval_From_Onset_To_Death3.Time_Interval_Unit3"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death3.Time_Interval_Unit3"
+                                    aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="Years">Years</option>
+                                    <option value="Months">Months</option>
+                                    <option value="Weeks">Weeks</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Hours">Hours</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="Time_Interval_From_Onset_To_Death3.Time_Interval_Qtty3"
+                                    name="Time_Interval_From_Onset_To_Death3.Time_Interval_Qtty3"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death3.Time_Interval_Qtty3"
+                                    autocomplete="off">
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="3"></div>
+                    <tr>
+                        <th style="border: none;">
+
+                        </th>
+                        <th>d</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath4" name="causeOfDeath4"
+                                    [(ngModel)]="formData.causeOfDeath4" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="4">
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code4" name="code4" [(ngModel)]="formData.code4"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeathFreeText4" name="causeOfDeathFreeText4"
+                                    [(ngModel)]="formData.causeOfDeathFreeText4" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-select" id="Time_Interval_From_Onset_To_Death4.Time_Interval_Unit4"
+                                    name="Time_Interval_From_Onset_To_Death4.Time_Interval_Unit4"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death4.Time_Interval_Unit4"
+                                    aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="Years">Years</option>
+                                    <option value="Months">Months</option>
+                                    <option value="Weeks">Weeks</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Hours">Hours</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="Time_Interval_From_Onset_To_Death4.Time_Interval_Qtty4"
+                                    name="Time_Interval_From_Onset_To_Death4.Time_Interval_Qtty4"
+                                    [(ngModel)]="formData.Time_Interval_From_Onset_To_Death4.Time_Interval_Qtty4"
+                                    autocomplete="off">
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="4"></div>
+                    <tr>
+                        <th>Other significant conditions <br>contributing to death (time intervals can be<br> included
+                            in brackets after the condition)</th>
+
+                        <th>Other 1</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath5" name="causeOfDeath5"
+                                    [(ngModel)]="formData.causeOfDeath5" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="5">
+                                <!-- <div class="ctw-window" data-ctw-ino="5"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code5" name="code5" [(ngModel)]="formData.code5"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="1">Years</option>
+                                    <option value="2">Months</option>
+                                    <option value="3">Weeks</option>
+                                    <option value="4">Days</option>
+                                    <option value="5">Hours</option>
+                                </select>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="5"></div>
+                    <tr>
+                        <th></th>
+
+                        <th>Other 2</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath6" name="causeOfDeath6"
+                                    [(ngModel)]="formData.causeOfDeath6" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="6">
+                                <!-- <div class="ctw-window" data-ctw-ino="6"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code6" name="code6" [(ngModel)]="formData.code6"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="1">Years</option>
+                                    <option value="2">Months</option>
+                                    <option value="3">Weeks</option>
+                                    <option value="4">Days</option>
+                                    <option value="5">Hours</option>
+                                </select>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="6"></div>
+                    <tr>
+                        <th></th>
+
+                        <th>Other 3</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath7" name="causeOfDeath7"
+                                    [(ngModel)]="formData.causeOfDeath7" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="7">
+                                <!-- <div class="ctw-window" data-ctw-ino="7"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code7" name="code7" [(ngModel)]="formData.code7"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="1">Years</option>
+                                    <option value="2">Months</option>
+                                    <option value="3">Weeks</option>
+                                    <option value="4">Days</option>
+                                    <option value="5">Hours</option>
+                                </select>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="7"></div>
+                    <tr>
+                        <th></th>
+
+                        <th>Other 4</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath8" name="causeOfDeath8"
+                                    [(ngModel)]="formData.causeOfDeath8" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="8">
+                                <!-- <div class="ctw-window" data-ctw-ino="8"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code8" name="code8" [(ngModel)]="formData.code8"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="1">Years</option>
+                                    <option value="2">Months</option>
+                                    <option value="3">Weeks</option>
+                                    <option value="4">Days</option>
+                                    <option value="5">Hours</option>
+                                </select>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="8"></div>
+                    <tr>
+                        <th></th>
+
+                        <th>Other 5</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="causeOfDeath9" name="causeOfDeath9"
+                                    [(ngModel)]="formData.causeOfDeath9" class="ctw-input" autocomplete="off"
+                                    data-ctw-ino="9">
+                                <!-- <div class="ctw-window" data-ctw-ino="9"></div> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="code9" name="code9" [(ngModel)]="formData.code9"
+                                    class="ctw-input" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected></option>
+                                    <option value="1">Years</option>
+                                    <option value="2">Months</option>
+                                    <option value="3">Weeks</option>
+                                    <option value="4">Days</option>
+                                    <option value="5">Hours</option>
+                                </select>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="" name="" aria-describedby="" placeholder=""
+                                    required #loginUsername="ngModel" ngModel>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="ctw-window" data-ctw-ino="9"></div>
+                    <tr>
+                        <th>State the underlying cause</th>
+                        <th></th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="State_Underlying_Cause" name="State_Underlying_Cause"
+                                    [(ngModel)]="formData.State_Underlying_Cause" autocomplete="off">
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="State_Underlying_CauseCode" name="State_Underlying_CauseCode"
+                                    [(ngModel)]="formData.State_Underlying_Cause_Code" autocomplete="off">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Doris Underlying Cause</th>
+                        <th></th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="Doris_Underlying_Cause" name="Doris_Underlying_Cause"
+                                    [(ngModel)]="formData.Doris_Underlying_Cause" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="dorisCode" name="dorisCode" [(ngModel)]="formData.dorisCode"
+                                    autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                View Report
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Doris Report</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p style="white-space: pre-line;">{{ report }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary">Ok</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Final Underlying Cause</th>
+                        <th></th>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-select" id="Final_Underlying_Cause"
+                                    aria-label="Default select example" (change)="updateUnderlyingCauseCode($event)">
+                                    <option selected disabled hidden></option>
+                                    <option *ngFor="let entity of finalUC" [value]="entity.bestMatchText">{{
+                                        entity.bestMatchText }}</option>
+                                    <!-- <option value="formData.State_Underlying_Cause">{{formData.State_Underlying_Cause}}</option>
+                                    <option value="formData.Doris_Underlying_Cause">{{formData.Doris_Underlying_Cause}}</option> -->
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="Final_Underlying_CauseCode"
+                                    [(ngModel)]="formData.Final_Underlying_CauseCode" name="Final_Underlying_CauseCode"
+                                    required>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </form>
+        </div>
+
+
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>Frame B: Other Medical Data</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="lastSurgeryPerformed">Was surgery performed within the last 4
+                    weeks?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" id="lastSurgeryPerformed" name="lastSurgeryPerformed"
+                    [(ngModel)]="formData.lastSurgeryPerformed" aria-label="Default select example">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="dateOfSurgery">If yes please specify date of surgery</label>
+            </div>
+            <div class="col">
+                <input type="date" id="dateOfSurgery" name="dateOfSurgery" [(ngModel)]="formData.dateOfSurgery"
+                    class="form-control" required pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="reasonForSurgery">If yes please specify reason for surgery(disease or
+                    condition)</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="reasonForSurgery" [(ngModel)]="formData.reasonForSurgery"
+                    name="reasonForSurgery" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="autopsyRequested">Was an autopsy requested?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" id="autopsyRequested" name="autopsyRequested"
+                    [(ngModel)]="formData.autopsyRequested" aria-label="Default select example">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="findingsInCertification">If yes were the findings used in
+                    certification?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" id="findingsInCertification" name="findingsInCertification"
+                    [(ngModel)]="formData.findingsInCertification" aria-label="Default select example">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>Manner of Death</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="disease">Disease</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="disease" name="disease"
+                        [(ngModel)]="formData.disease">
+                    <label class="form-check-label" for="disease">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="assault">Assault</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="assault" name="assault"
+                        [(ngModel)]="formData.assault">
+                    <label class="form-check-label" for="assault">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="notDetermined">Could not be determined</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="notDetermined" name="notDetermined"
+                        [(ngModel)]="formData.notDetermined">
+                    <label class="form-check-label" for="notDetermined">Yes</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="accident">Accident</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="accident" name="accident"
+                        [(ngModel)]="formData.accident">
+                    <label class="form-check-label" for="accident">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="legalIntervention">Legal intervention</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="legalIntervention"
+                        name="legalIntervention" [(ngModel)]="formData.legalIntervention">
+                    <label class="form-check-label" for="legalIntervention">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="pendingInvenstigation">Pending investigation</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="pendingInvenstigation"
+                        name="pendingInvenstigation" [(ngModel)]="formData.pendingInvenstigation">
+                    <label class="form-check-label" for="pendingInvenstigation">Yes</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="intentionalSelfHarm">Intentional self-harm</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="intentionalSelfHarm"
+                        name="intentionalSelfHarm" [(ngModel)]="formData.intentionalSelfHarm">
+                    <label class="form-check-label" for="intentionalSelfHarm">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="war">War</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="war" name="war"
+                        [(ngModel)]="formData.war">
+                    <label class="form-check-label" for="war">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="unknown">Unknown</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="unknown" name="unknown"
+                        [(ngModel)]="formData.unknown">
+                    <label class="form-check-label" for="unknown">Yes</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="externalCause">If external cause or poisoning </label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Yes" id="externalCause" name="externalCause"
+                        [(ngModel)]="formData.externalCause">
+                    <label class="form-check-label" for="externalCause">Yes</label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="dateOfInjury">Date of injury </label>
+            </div>
+            <div class="col">
+                <input type="date" id="dateOfInjury" name="dateOfInjury" [(ngModel)]="formData.dateOfInjury"
+                    class="form-control" required pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="describeExternalCause">Please describe how external cause occured (if
+                    poisoning
+                    please specify poisoning agent)</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="describeExternalCause"
+                    [(ngModel)]="formData.describeExternalCause" name="describeExternalCause" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="occuranceOfExternalCause">Place of occurance of the external
+                    cause</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="occuranceOfExternalCause"
+                    [(ngModel)]="formData.occuranceOfExternalCause" name="occuranceOfExternalCause" required>
+            </div>
+        </div>
+
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>Fatal or infant death</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="multiplePregnancy">Multiple pregnancy</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="multiplePregnancy"
+                    name="multiplePregnancy" [(ngModel)]="formData.multiplePregnancy">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="stillBorn">Stillborn?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="stillBorn" name="stillBorn"
+                    [(ngModel)]="formData.stillBorn">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="numberOfHrsSurvived">If death within 24 hrs specify the number of hours
+                    survived</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="numberOfHrsSurvived"
+                    [(ngModel)]="formData.numberOfHrsSurvived" name="numberOfHrsSurvived" required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="birthWeight">Birth weight (in grams)</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="birthWeight" [(ngModel)]="formData.birthWeight"
+                    name="birthWeight" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="numberOfCompletedPregWeeks">Number of completed weeks of
+                    pregnancy</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="numberOfCompletedPregWeeks"
+                    [(ngModel)]="formData.numberOfCompletedPregWeeks" name="numberOfCompletedPregWeeks" required>
+            </div>
+            <div class="col">
+                <label class="form-label" for="ageOfMother">Age of mother (years)</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="ageOfMother" [(ngModel)]="formData.ageOfMother"
+                    name="ageOfMother" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="conditionsPerinatalDeath">If the death was perinatal, please state
+                    conditions of
+                    mother that affected the fetus and newborn</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="conditionsPerinatalDeath"
+                    [(ngModel)]="formData.conditionsPerinatalDeath" name="conditionsPerinatalDeath" required>
+            </div>
+        </div>
+
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>For women:</h4>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="wasDeceasedPreg">Was the deceased pregnant or within 6 weeks of
+                    delivery</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="wasDeceasedPreg"
+                    name="wasDeceasedPreg" [(ngModel)]="formData.wasDeceasedPreg">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="atWhatPoint">At what point?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="atWhatPoint" name="atWhatPoint"
+                    [(ngModel)]="formData.atWhatPoint">
+                    <option selected></option>
+                    <option value="At time of death">At time of death</option>
+                    <option value="Within 42 days before the death">Within 42 days before the death</option>
+                    <option value="Between 43 days up to 1 year before death">Between 43 days up to 1 year before death
+                    </option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="didPregancyContributeToDeath">Did the pregnancy contribute to
+                    death?</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="didPregancyContributeToDeath"
+                    name="didPregancyContributeToDeath" [(ngModel)]="formData.didPregancyContributeToDeath">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="parity">Parity</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="parity" [(ngModel)]="formData.parity" name="parity"
+                    required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="modeOfDelivery">Mode of delivery</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="modeOfDelivery"
+                    name="modeOfDelivery" [(ngModel)]="formData.modeOfDelivery">
+                    <option selected></option>
+                    <option value="SVD">SVD</option>
+                    <option value="Assisted">Assisted</option>
+                    <option value="Caesarean">Caesarean</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="placeOfDelivery">Place of delivery</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="placeOfDelivery"
+                    name="placeOfDelivery" [(ngModel)]="formData.placeOfDelivery">
+                    <option selected></option>
+                    <option value="Heath Facility">Heath Facility</option>
+                    <option value="Home">Home</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Don't Know">Don't Know</option>
+                    <option value="TBA">TBA</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="deliveredBySkilledAttendant">Delivered by skilled atendant</label>
+            </div>
+            <div class="col">
+                <select class="form-select" aria-label="Default select example" id="deliveredBySkilledAttendant"
+                    name="deliveredBySkilledAttendant" [(ngModel)]="formData.deliveredBySkilledAttendant">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+        </div>
+        <div class="row rowHeader">
+            <div class="col">
+                <h4>I hereby certify that (tick as appropriate):</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="I_Attended_Deceased">I attended the deceased before death</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label" for="I_Attended_Deceased">Yes</label>
+                    <input class="form-check-input" type="checkbox" value="Yes" id="I_Attended_Deceased"
+                        name="I_Attended_Deceased" [(ngModel)]="formData.I_Attended_Deceased">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="I_Examined_Body">I examined the body after death</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label" for="I_Examined_Body">Yes</label>
+                    <input class="form-check-input" type="checkbox" value="Yes" id="I_Examined_Body"
+                        name="I_Examined_Body" [(ngModel)]="formData.I_Examined_Body">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="I_Conducted_PostMortem">I conducted the post mortem of the body</label>
+            </div>
+            <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label" for="I_Conducted_PostMortem">Yes</label>
+                    <input class="form-check-input" type="checkbox" value="Yes" id="I_Conducted_PostMortem"
+                        name="I_Conducted_PostMortem" [(ngModel)]="formData.I_Conducted_PostMortem">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="Other">Other (specify)</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="Other" [(ngModel)]="formData.Other" name="Other" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="examinedBy">Examined By</label>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="examinedBy" [(ngModel)]="formData.examinedBy"
+                    name="examinedBy" required>
+            </div>
+        </div><br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <!-- <button (click)="onUpdateRecord()">Update Record</button> -->
+    </form><br><br><br><br>
+
+    <app-form-footer> </app-form-footer>
+</div>
+<router-outlet></router-outlet>

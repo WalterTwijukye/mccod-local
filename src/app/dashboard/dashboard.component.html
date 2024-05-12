@@ -1,0 +1,99 @@
+<app-form-header></app-form-header>
+<div class="container">
+  <div class="main">
+    <div class="top">
+      <form action="" class="dbForm">
+        <div class="row">
+          <div class="col">
+            <select class="form-select" id="facility" name="facility" 
+              aria-label="Select Facility">
+              <option *ngFor="let facility of facilities" [value]="facility.name">{{ facility.name }}</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-select" aria-label="Default select example">
+              <!-- <option selected></option> -->
+              <option value="1" selected>National</option>
+              <option value="2">Foreigner</option>
+              <option value="2">Refugee</option>
+            </select>
+          </div>
+          <div class="col topBtns">
+            <button class="dbBtns">Add Event</button>
+            <button class="dbBtns" style="padding-right: 5px; padding-left: 5px;">API</button>
+            <button class="dbBtns">Configure</button>
+          </div>
+
+        </div>
+      </form>
+    </div><br>
+
+    <div class="miniDB">
+      <button (click)="switchGraphType()">Switch Graph Type</button>
+      <div *ngIf="data">
+        <canvas id="myChart" style="width: 100px; height: 150px;"></canvas>
+      </div>
+    </div><br>
+
+    <div class="lineList">
+      <div class="row1">
+        <span class="right">Cases</span>
+        <div class="left">
+          <button class="settings lineListBtn dbBtns">Settings</button>
+          <button class="download dbBtns">Download</button>
+        </div>
+      </div>
+
+      <div class="row2 filters">
+        <div class="leftSide">
+          <button class="filter dbBtns">Full Name</button>
+          <button class="filter dbBtns">NIN</button>
+          <button class="filter dbBtns">Date of Birth</button>
+          <button class="filter dbBtns">Age</button>
+        </div>
+
+        <div class="rightSide">
+          <input>
+        </div>
+      </div>
+
+      <div class="row table">
+        <table>
+          <tr>
+            <th>Full Name</th>
+            <th>NIN</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Date and time of Death</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <td>Konstantine Kamal</td>
+            <td>CM9800067KN54M</td>
+            <td></td>
+            <td>53</td>
+            <td>Male</td>
+            <td></td>
+            <td>
+              <button class="del">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Lavrenti beria</td>
+            <td>CM9800067KN54M</td>
+            <td></td>
+            <td>57</td>
+            <td>Male</td>
+            <td></td>
+            <td>
+              <button class="del">Delete</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

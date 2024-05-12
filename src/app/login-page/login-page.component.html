@@ -1,0 +1,57 @@
+<div class="container ">
+    <!-- login-page.component.html -->   
+
+    <div class="loginPage">
+        <div class="loginForm">
+            <div class="span">
+                <h4 style="color: white">dhis2-mccod-offline</h4>
+            </div>          
+            
+            <form class="signIn" (submit)="loginUser(loginUsername.value, loginPassword.value)">
+                <div class="form-group">
+                  <!-- <label for="exampleInputEmail1">Email addre</label> -->
+                  <small id="usernameHelp" class="form-text text-muted" >Sign in</small>
+                  <input type="text" class="form-control" id="login-username" name="login-username" aria-describedby="usernameHelp" placeholder="Username" required #loginUsername="ngModel" ngModel>
+                  <!-- <small id="usernameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                </div>
+                <div class="form-group">
+                  <!-- <label for="exampleInputPassword1">Password</label> -->
+                  <input type="password" class="form-control" id="login-password" placeholder="Password"  name="login-password" required #loginPassword="ngModel"
+                  ngModel>
+                </div>
+                <!-- <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> -->
+                <button type="submit" class="loginBtn" routerLink="/dashboard">Sign In</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="loginFooter">
+      <hr style="color: black">
+      <div class="span">
+        <small id="usernameHelp" class="form-text text-muted" >Powered By: </small>
+        <h5><b>AI-connecT</b></h5>
+      </div>
+    </div>
+</div>
+
+<!-- register -->
+<!-- <div class="">
+    <h2>Register</h2>
+    <form #f="ngForm" (ngSubmit)="registerUser(f)">
+        <div>
+            <label for="reg-username">Username:</label>
+            <input type="text" id="reg-username" name="reg-username" required #regUsername="ngModel" ngModel>
+            <input type="text" id="username" name="username" required [(ngModel)]="userData.username">
+        </div>
+        <div>
+            <label for="reg-password">Password:</label>
+            <input type="password" id="reg-password" name="reg-password" required #regPassword="ngModel" ngModel>
+            <input type="text" id="password" name="password" required [(ngModel)]="userData.password">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div> -->

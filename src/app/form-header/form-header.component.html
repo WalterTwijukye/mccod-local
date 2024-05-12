@@ -1,0 +1,31 @@
+<div class="header">
+
+  <span class="headng">
+    Vital Events - Medical Certificate of Cause of Death
+  </span>
+
+  <div class="rightEnd">
+    <button class="dashboardBtn" style="display: none;" routerLink="/MedicalCertificateOfCauseOfDeath">
+      Form
+    </button>
+
+    <a href="https://icdcdn.who.int/icdapibinaries/icdapi-setup-2.4.0.msi" download>
+      <button class="dashboardBtn" >Download & Install
+        ICD-API</button>
+    </a>
+
+    <span class="internetStatus">ICD-API : {{ serviceStatus }}</span>
+
+    <span class="internetStatus">
+      <span class="circle" [class]="circleClass"></span> {{ isOnline ? 'Online' : 'Offline' }}
+    </span>
+
+    <!-- <span class="internetStatus">
+      <span class="circle{{ isOnline ? ' online' : 'offline' }}"></span> {{ isOnline ? 'Online' : 'Offline' }}
+    </span> -->
+
+  </div>
+
+</div>
+
+<router-outlet></router-outlet>

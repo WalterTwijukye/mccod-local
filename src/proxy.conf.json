@@ -1,0 +1,8 @@
+
+{
+    "/api": {
+      "target": "https://www.example.com",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }

@@ -1,0 +1,84 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+html {
+    height: 100%; 
+    /* width: 100%;    */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;   
+    /* min-width: 100vw;  */
+}
+
+.container {
+    margin-top: 60px;
+    /* border: 1px solid; */
+    margin-left: 50px;
+    position: relative;
+}
+
+.main {
+    width: 105%;
+    padding-left: 15px;
+    border: 1px transparent;
+}
+
+.dbBtns {
+    border: 1px solid rgb(46, 45, 45);
+    background-color: transparent;
+    color: rgb(39, 38, 38);
+    padding: 3px;
+    border-radius: 2px;
+}
+
+.topBtns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.row1 {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 900px;
+    padding: 5px;
+}
+
+.row2{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 645px;
+    padding: 5px;
+}
+
+.leftSide {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.table {
+    padding: 5px;
+}
+
+.del {
+    padding: 5px;
+    border-radius: 3px;
+    border: 0.25px solid red;
+    color: red;
+}
+
+/* ******** Charts ****** */
+.miniDB {
+    padding: 10px;
+}
