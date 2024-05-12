@@ -1,0 +1,136 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+html {
+    height: 100%; 
+    /* width: 100%;    */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;   
+    /* min-width: 100vw;  */
+}
+
+.header1 {
+    /* position: fixed; */
+    background-color: rgb(212, 207, 207);
+    margin-top: 50px;
+    /* margin-left: 50px; */
+    height: 85px;   
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 569px;
+
+}
+ .heading {
+    margin-left: 50px;
+ }
+
+p.stat {
+    margin-left: 40px;
+}
+
+/* ========== CRUD Modal ==========  */
+
+.topBtns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tableRecords {
+    padding: 5px;
+    border: none;    
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 5px;
+}
+
+.action .del {
+    padding: 5px;
+    border-radius: 3px;
+    border: 0.25px solid red;
+    color: red;
+}
+
+.action .edit {
+    padding: 5px;
+    border-radius: 3px;
+    border: 0.25px solid rgb(252, 185, 0);
+    color: rgb(252, 185, 0);
+}
+
+.modal-body {
+    width: 100%;    
+}
+
+
+/* ========= Container ============== */
+
+.container {
+    padding-top: 20px;
+    height: 100%;
+    width: 110%;    
+    position: relative;    
+    margin-left: 50px;
+}
+
+.summaryTabs{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+span.tab {
+    /* border: 1px solid black; */
+    background-color: transparent;
+    color: black;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+.main {
+    width: 110%;
+    /* margin-left: 15px; */
+}
+
+.rowHeader {
+    background-color: rgb(243, 243, 243);
+    margin-top: 15px;
+}
+
+.col {
+    border: 1px solid rgb(154, 201, 216);
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.tables {
+    margin-right: -12px; 
+    margin-left: -12px;
+       
+}
+
+tr, th, td {
+    border: 1px solid rgb(154, 201, 216);
+    padding: 5px
+}
+
+.ctw-window {
+    width: 300%;
+    z-index: 1000;
+}
+
